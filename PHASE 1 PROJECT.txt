@@ -1,0 +1,245 @@
+package com.myphase;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Filemanager
+
+FILE MANAGER
+{
+	
+	/*
+	 * This Method will return the file names from the folder
+	 * @param folderpath
+	 * return List<String>
+	 */
+	  
+	 public static List<String> getAllfiles(String folderpath)
+	
+
+	{
+		 //Creating File Object
+		File fl= new File(folderpath);
+		
+		//Getting all the files into File Array
+		File[] listofFiles=fl.listFiles();
+		
+		//Declare a list to Store file names
+		List<String> fileNames =new ArrayList<String>();
+		
+		for(File f:listofFiles)
+			fileNames.add(f.getName());
+					
+		//return the list
+		return fileNames;
+					
+	}
+	 
+	 /* This Method will create or append content into the file specified
+	  * @param folderName
+	  * @param filName
+	  * @param content
+	  * @param boolean
+	  */
+	 public static boolean createFiles(String folderpath,String fileName,List<String> content)
+	 {
+		 try
+		 {
+			 File fl=new File(folderpath, fileName);
+			FileWriter fw=new FileWriter(fl);		 
+					 
+			for(String s:content)
+			{
+				fw.write(s+"\n");
+			}
+			fw.close();
+			return true;
+			 
+		 }
+		 catch(Exception Ex)
+		 {
+			 return false;
+		 }
+	 }	 
+
+	 
+	public static boolean deleteFile(String folderpath, String fileName)
+	{
+		File file=new File(folderpath+"\\"+fileName);
+
+		
+		try
+		{
+			if(file.delete())
+				return true;
+			else
+				return false;
+		}
+	    catch(Exception Ex)
+		{
+		return false;
+			
+		}
+	}
+
+public static boolean searchFile(String folderpath, String fileName)
+{
+	File file=new File(folderpath+"\\"+fileName);
+
+	
+	try
+	{
+		if(file.exists())
+			return true;
+		else
+			return false;
+	}
+    catch(Exception Ex)
+	{
+	return false;
+		
+	}
+}
+}
+		 
+=================================================================================
+MY PHASE
+
+package com.myphase;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class Myphase 
+   {
+   static final String folderpath="D:\\Myproject\\Phase1 files";
+	
+	public static void main(String[] args) 
+	{
+		int proceed=1;
+		
+		 do
+			 
+		 {	 
+		//Variable Declaration
+		Scanner obj =new Scanner(System.in);
+		int ch;
+		
+		//Menu
+		displayMenu();
+		System.out.println("Enter your choice");
+		ch=Integer.parseInt(obj.nextLine());
+		
+		switch(ch)
+		{
+			case 1 : getAllFiles();
+			         break;
+			case 2 : createFiles();  
+			         break;
+			case 3 : deleteFile();
+			         break;
+			case 4 : searchFile();
+			         break;
+			case 5 :System.exit(0);
+			          break;
+			default : System.out.println("Invalid Option");  
+			          break;
+			          
+		}
+	}while(proceed>0);
+	}
+
+
+	 public static void displayMenu()
+	{
+	System.out.println("***************************************************************");
+	System.out.println("\t\t Software Solution Compny Pvt Ltd");
+	System.out.println("***************************************************************");
+    System.out.println("1.Display all files");
+    System.out.println("2.Add new file");
+    System.out.println("3.Delete a file");
+    System.out.println("4.Search a file");
+    System.out.println("5.Exit");
+    System.out.println("***************************************************************");
+  
+	}
+	 
+	public static void getAllFiles()
+	{
+       List<String> fileNames =Filemanager.getAllfiles(folderpath);
+		
+		for(String f:fileNames)
+			System.out.println(f);
+	}
+	public static void createFiles()
+	{
+		//Variable Declaration
+		Scanner obj =new Scanner(System.in);
+		String fileName;
+		int linesCount;
+		List<String> content=new ArrayList<String>();
+		
+		//Read file name from user
+		System.out.println("Enter File name");
+		fileName=obj.nextLine();
+		
+	             //Read number of lines from user
+                           System.out.println("Enter how many lines in the file");			
+	             linesCount=Integer.parseInt(obj.nextLine());
+	    
+	            //Read Lines from user
+	             for(int i=1; i<=linesCount;i++)
+	             {
+	    	System.out.println("Enter line"+i+" ");
+	    	content.add(obj.nextLine());
+	              }
+	    
+                	    //Save the content into the file
+	                 boolean isSaved=Filemanager.createFiles(folderpath, fileName, content);
+	    
+	    if(isSaved)
+	       System.out.println("File and Data Saved Successfully");
+	    else
+	    	System.out.println("Some error Occured. Please contact admin@abc");
+
+    	}
+	    public static void deleteFile()
+	    {
+	    	            //Code for deleting a file
+			String fileName;
+			Scanner obj=new Scanner(System.in);
+			
+			//Read file to delete
+			System.out.println("Enter file name to be delete");
+			fileName=obj.nextLine();
+			
+	        boolean isDeleted=Filemanager.deleteFile(folderpath, fileName);
+		
+			if(isDeleted)
+				System.out.println("File deleted successfully");
+			else
+				System.out.println("Either file not there or some access issue");
+	    }
+	    public static void searchFile()
+	    {
+	    	//Variable Declaration
+	    	String fileName;
+			Scanner obj=new Scanner(System.in);
+			
+			//Read file to search
+			System.out.println("Enter file name to be search");
+			fileName=obj.nextLine();
+			
+	        boolean isFound=Filemanager.searchFile(folderpath, fileName);
+		
+			if(isFound)
+				System.out.println("File Found");
+			else
+				System.out.println("Either file there or someissue");
+
+			
+	    }
+        }	
